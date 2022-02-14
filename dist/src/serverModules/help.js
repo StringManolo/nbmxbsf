@@ -18,8 +18,8 @@ Send all the files from the path (recursively) to a remote host.
 /dumpNetwork
 Capture the network traffic
 
-/findPasswords
-Find credentials in the filesystem
+/findCredentials
+Find files holding sensitive information in the filesystem
 
 /pe
 Try to log as root in the system 

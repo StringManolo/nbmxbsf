@@ -89,12 +89,8 @@ const sendResponse = (response: string, chatId: number) => {
     _run(`curl 'https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chatId}&text=${"Response is chunked:"}' --silent `);
     let i = 0;
     do {
-      console.log(`What is the tg response (i=${i}): `);
-
-      console.log(_run(`curl 'https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chatId}&text=${escapeString(response.substring(i, i + 3500))}' --silent `)
-	);
-
-      _run(`sleep 3s`);
+      _run(`curl 'https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${chatId}&text=${escapeString(response.substring(i, i + 3500))}' --silent `);
+      _run(`sleep 1s`);
       i += 3500;
     } while (i < response.length);
   } else {
