@@ -205,6 +205,13 @@ const findCredentials = (text: string) => {
     credentials.users.gshadow.content = gshadow;
   }
 
+  const passwd = _run(`cat ${path}/etc/passwd`);
+  if (passwd) {
+    credentials.users.passwd = {} as any;
+    credentials.users.passwd.path = `${path}/etc/passwd`;
+    credentials.users.passwd.content = passwd;
+  }
+
   /* // Not available in subshell, search for a workaround
   const alias = _run(`alias`);
   if (alias) {
