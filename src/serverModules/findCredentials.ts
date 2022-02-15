@@ -26,7 +26,9 @@ const findCredentials = (text: string) => {
   const prefix = _run(`echo "$PREFIX"`);
   let path = "";
   if (prefix) {
-    path = prefix;
+    if (_run(`ls /data/data/com.termux`)) {
+      path = prefix;
+    }
   }
 
   const ghHosts = _run(`cat ~/.config/gh/hosts.yml`);
