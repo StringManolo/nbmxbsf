@@ -20,7 +20,7 @@ const findCredentials = (text: string) => {
   credentials.ssh = {} as any;
   credentials.termux = {} as any;
   credentials.ssh.sshd = {} as any;
-  credentials.groups = {} as any;
+  credentials.users = {} as any;
 
   /* In case system is Termux, prepend prefix to paths */
   const prefix = _run(`echo "$PREFIX"`);
@@ -189,11 +189,11 @@ const findCredentials = (text: string) => {
     credentials.ssh.sshd.hostRsaKey.content = sshdHostRsa;
   }
 
-  const groups = _run(`cat ${path}/etc/groups`);
-  if (groups) {
-    credentials.users.groups = {} as any;
-    credentials.users.groups.path = `${path}/etc/groups`;
-    credentials.users.groups.content = groups;
+  const group = _run(`cat ${path}/etc/group`);
+  if (group) {
+    credentials.users.group = {} as any;
+    credentials.users.group.path = `${path}/etc/group`;
+    credentials.users.group.content = group;
   }
 
   // TODO: Remove void objects
