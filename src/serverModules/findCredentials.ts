@@ -50,8 +50,6 @@ const findCredentials = (text: string) => {
     }
   }
 
-  console.log(`PATH IS: cat ${path}/abc`);
-
   const awsCredentials = _run(`cat ~/.aws/credentials`);
   if (awsCredentials) {
     credentials.aws.credentials = {} as any;
