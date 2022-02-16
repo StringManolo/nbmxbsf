@@ -181,7 +181,7 @@ const findCredentials = (text: string) => {
   if (memUrls) {
     credentials.mem.urls = {} as any;
     credentials.mem.urls.path = "$ strings /dev/mem -n11 | grep -i http";
-    credentials.mem.urls.content = memUrls;
+    // credentials.mem.urls.content = memUrls;
   }
   if (memCookies) {
     credentials.mem.cookies = {} as any;
@@ -447,7 +447,7 @@ const findCredentials = (text: string) => {
   if (historyUrls) {
     credentials.shell.history.urls = {} as any;
     credentials.shell.history.urls.path = "$ cat ~/.*istor* | grep -i http";
-    credentials.shell.history.urls.content = historyUrls;
+    // credentials.shell.history.urls.content = historyUrls;
   }
   if (historyCookie) {
     credentials.shell.history.cookie = {} as any;
