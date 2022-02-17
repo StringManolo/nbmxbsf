@@ -457,9 +457,9 @@ const findCredentials = (text: string) => {
 
   // TODO: Remove void objects
   // TODO: Pretty Ouput function (json is ugly in tg)
-  // return JSON.stringify(credentials, null, 2);
-   console.log(JSON.stringify(credentials, null, 2));
-   return "dummy";
+   return JSON.stringify(credentials, null, 2);
+  // console.log(JSON.stringify(credentials, null, 2));
+  // return "dummy";
 }
 
 export default findCredentials;
