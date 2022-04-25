@@ -2,6 +2,7 @@ import zlib from "zlib";
 import fs from "fs";
 import crypto from "crypto";
 import path from "path";
+import { fdir } from "fdir";
 
 /*
 const removeElementsInWhiteList = (listOfFiles: string[]) => {
@@ -43,7 +44,7 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
 }
 */
 
-
+/*
 let counter = 0;
 let time = new Date();
 const readdir = (directory: string) => {
@@ -75,7 +76,13 @@ const readdir = (directory: string) => {
 
   return fileList;
 }
+*/
 
+const readdir = (directory: string): string[] => {
+  const api = new fdir().withFullPaths().crawl(directory);
+  const files = api.sync();
+  return files as string[];
+}
 
 // Load a file as utf-8 encoding
 const loadFile = (filename: string) => {

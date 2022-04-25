@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const zlib_1 = __importDefault(require("zlib"));
 const fs_1 = __importDefault(require("fs"));
 const crypto_1 = __importDefault(require("crypto"));
-const path_1 = __importDefault(require("path"));
+const fdir_1 = require("fdir");
 /*
 const removeElementsInWhiteList = (listOfFiles: string[]) => {
   const whitelist = [
@@ -46,36 +46,43 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
   return listOfFiles;
 }
 */
+/*
 let counter = 0;
 let time = new Date();
-const readdir = (directory) => {
-    var _a;
-    ++counter;
-    if (counter % 10) {
-        console.log(`${counter} directories read in ${+new Date() - +time} ms`);
-    }
-    let fileList = [];
-    let files = [];
+const readdir = (directory: string) => {
+  ++counter;
+  if (counter % 10) {
+    console.log(`${counter} directories read in ${+new Date() - +time} ms`);
+  }
+  let fileList: string[] = [];
+
+  let files: string[] = [];
+  try {
+    files = fs.readdirSync(directory);
+  } catch(err) {
+        
+  }
+ 
+  for (const file of files) {
+    const p = path.join(directory, file);
     try {
-        files = fs_1.default.readdirSync(directory);
+      if (fs.statSync(p)?.isDirectory()) {
+        fileList = [...fileList, ...(readdir(p))];
+      } else {
+        fileList.push(p);
+      }
+    } catch(err) {
+      return fileList;
     }
-    catch (err) {
-    }
-    for (const file of files) {
-        const p = path_1.default.join(directory, file);
-        try {
-            if ((_a = fs_1.default.statSync(p)) === null || _a === void 0 ? void 0 : _a.isDirectory()) {
-                fileList = [...fileList, ...(readdir(p))];
-            }
-            else {
-                fileList.push(p);
-            }
-        }
-        catch (err) {
-            return fileList;
-        }
-    }
-    return fileList;
+  }
+
+  return fileList;
+}
+*/
+const readdir = (directory) => {
+    const api = new fdir_1.fdir().withFullPaths().crawl(directory);
+    const files = api.sync();
+    return files;
 };
 // Load a file as utf-8 encoding
 const loadFile = (filename) => {
