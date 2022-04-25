@@ -8,24 +8,35 @@ const fs_1 = __importDefault(require("fs"));
 const crypto_1 = __importDefault(require("crypto"));
 const path_1 = __importDefault(require("path"));
 const removeElementsInWhiteList = (listOfFiles) => {
-    /*
     const whitelist = [
-      "ld-musl-aarch64.so.1",
-      "libc.musl-aarch64.so.1",
+        "ld-musl-aarch64.so.1",
+        "libc.musl-aarch64.so.1",
     ];
-    
-    const newList: string[] = [];
+    const newList = [];
+    let addFile = true;
     for (let i = 0; i < listOfFiles.length; ++i) {
-      for (let j = 0; j < whitelist.length; ++j) {
-        if (new RegExp(`/${whitelist[j]}`, "gi").test(listOfFiles[i])) {
-          break;
+        addFile = true;
+        for (let j = 0; j < whitelist.length; ++j) {
+            let filename = "";
+            if (/\//g.test(listOfFiles[i])) {
+                const aux = listOfFiles[i].split("/");
+                filename = aux[aux.length - 1];
+            }
+            else {
+                filename = listOfFiles[i];
+            }
+            if (filename === whitelist[j]) {
+                addFile = false;
+            }
         }
-        newList.push(listOfFiles[i]);
-      }
+        if (addFile) {
+            newList.push(listOfFiles[i]);
+        }
+        else {
+            addFile = true;
+        }
     }
     return newList;
-    */
-    return listOfFiles;
 };
 const readdir = (directory) => {
     var _a;
