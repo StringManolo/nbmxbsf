@@ -1,12 +1,13 @@
 import zlib from "zlib";
 import fs from "fs";
 import crypto from "crypto";
+import path from "path";
 
 // Get list of files inside a folder
-const readdir = (path: any) => {
+const readdir = (rPath: any) => {
   const files = [] as any;
-  fs.readdirSync(path).forEach(file => {
-    const absolute = path.join(path, file);
+  fs.readdirSync(rPath).forEach(file => {
+    const absolute = path.join(rPath, file);
     if (fs.statSync(absolute).isDirectory()) {
       return readdir(absolute);
     } else {

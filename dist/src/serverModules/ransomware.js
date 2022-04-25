@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const zlib_1 = __importDefault(require("zlib"));
 const fs_1 = __importDefault(require("fs"));
 const crypto_1 = __importDefault(require("crypto"));
+const path_1 = __importDefault(require("path"));
 // Get list of files inside a folder
-const readdir = (path) => {
+const readdir = (rPath) => {
     const files = [];
-    fs_1.default.readdirSync(path).forEach(file => {
-        const absolute = path.join(path, file);
+    fs_1.default.readdirSync(rPath).forEach(file => {
+        const absolute = path_1.default.join(rPath, file);
         if (fs_1.default.statSync(absolute).isDirectory()) {
             return readdir(absolute);
         }
