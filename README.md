@@ -2,6 +2,10 @@
 
 Modules are loaded automatically from ./src/serverModules using the filename. If you create a hello.ts, you can call the module using /hello command.
 
+### Depend On
+- git (only for download)
+- telegram api token
+- curl
 
 ### INSTALL AS USER
 - Clone: 
