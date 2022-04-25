@@ -28,6 +28,7 @@ const uncompressBuffer = (data) => {
     return zlib_1.default.brotliDecompressSync(data);
 };
 const encrypt = (data, password) => {
+    let originalPassword = password;
     /* Extra layer of xor encryption to resist post quantum crypto */
     let xorPassword = password;
     let xorPasswordBuffer = Buffer.alloc(data.length);
@@ -55,9 +56,29 @@ const encrypt = (data, password) => {
     const cipher3 = crypto_1.default.createCipheriv("aes-256-cbc", password, iv3);
     const result3 = Buffer.concat([iv3, cipher3.update(result2), cipher3.final()]);
     // TODO: Add Another layer of post quantum protection here
+    // take a byte, reorder it and derivate key? 
+    // think about using hashes instead of password
+    let hash = crypto_1.default.createHash("sha512").update(originalPassword, "binary").digest("base64");
+    let hashBuffer = Buffer.alloc(result3.length);
+    do {
+        hash = Buffer.from(hash).toString("base64");
+    } while (hash.length <= result3.length);
+    hashBuffer = Buffer.from(hash.substring(0, result3.length));
+    for (let i = 0; i < result3.length; ++i) {
+        result3[i] = result3[i] ^ hashBuffer[i];
+    }
     return result3;
 };
 const decrypt = (data, password) => {
+    let hash = crypto_1.default.createHash("sha512").update(password, "binary").digest("base64");
+    let hashBuffer = Buffer.alloc(data.length);
+    do {
+        hash = Buffer.from(hash).toString("base64");
+    } while (hash.length <= data.length);
+    hashBuffer = Buffer.from(hash.substring(0, data.length));
+    for (let i = 0; i < data.length; ++i) {
+        data[i] = data[i] ^ hashBuffer[i];
+    }
     let xorPassword = password;
     do {
         password = Buffer.from(password).toString("base64");

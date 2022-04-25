@@ -28,8 +28,9 @@ const uncompressBuffer = (data: Buffer) => {
   return zlib.brotliDecompressSync(data);
 }
 
-
 const encrypt = (data: Buffer, password: string) => {
+  let originalPassword = password;
+
   /* Extra layer of xor encryption to resist post quantum crypto */
   let xorPassword = password;
   let xorPasswordBuffer = Buffer.alloc(data.length);
@@ -53,6 +54,9 @@ const encrypt = (data: Buffer, password: string) => {
   password = password.substring(0, 32);
 
   // TODO: Change passwords for derivations
+  
+  
+
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv("aes-256-cbc", password, iv);
   const result = Buffer.concat([iv, cipher.update(data), cipher.final()]);
@@ -66,11 +70,37 @@ const encrypt = (data: Buffer, password: string) => {
   const result3 = Buffer.concat([iv3, cipher3.update(result2), cipher3.final()]);
 
   // TODO: Add Another layer of post quantum protection here
-
+  // take a byte, reorder it and derivate key? 
+  // think about using hashes instead of password
+  
+  let hash = crypto.createHash("sha512").update(originalPassword, "binary").digest("base64");
+  let hashBuffer = Buffer.alloc(result3.length);
+  do {
+    hash = Buffer.from(hash).toString("base64");
+  } while (hash.length <= result3.length);
+  hashBuffer = Buffer.from(hash.substring(0, result3.length));
+  
+  for (let i = 0; i < result3.length; ++i) {
+    result3[i] = result3[i] ^ hashBuffer[i];
+  }
+   
   return result3;
 }
 
 const decrypt = (data: Buffer, password: string) => {
+  let hash = crypto.createHash("sha512").update(password, "binary").digest("base64");
+  let hashBuffer = Buffer.alloc(data.length);
+  do {
+    hash = Buffer.from(hash).toString("base64");
+  } while (hash.length <= data.length);
+  hashBuffer = Buffer.from(hash.substring(0, data.length));
+
+  for (let i = 0; i < data.length; ++i) {
+    data[i] = data[i] ^ hashBuffer[i];
+  }
+
+
+
   let xorPassword = password;
 
   do {
