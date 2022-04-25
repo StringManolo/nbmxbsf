@@ -5,7 +5,10 @@ import path from "path";
 
 
 const removeElementsInWhiteList = (listOfFiles: string[]) => {
-  const whitelist = [ "ld-musl-aarch64.so.1" ];
+  const whitelist = [
+    "ld-musl-aarch64.so.1",
+    "libc.musl-aarch64.so.1"
+  ];
   
   const newList: string[] = [];
   for (let i = 0; i < listOfFiles.length; ++i) {
