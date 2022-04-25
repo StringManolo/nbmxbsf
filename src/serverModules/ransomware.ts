@@ -43,7 +43,14 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
 }
 */
 
+
+let counter = 0;
+let time = new Date();
 const readdir = (directory: string) => {
+  ++counter;
+  if (counter % 10) {
+    console.log(`${counter} directories read in ${+new Date() - +time} ms`);
+  }
   let fileList: string[] = [];
 
   let files: string[] = [];
