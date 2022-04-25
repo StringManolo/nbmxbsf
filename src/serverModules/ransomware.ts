@@ -7,15 +7,16 @@ import path from "path";
 const removeElementsInWhiteList = (listOfFiles: string[]) => {
   const whitelist = [
     "ld-musl-aarch64.so.1",
-    "libc.musl-aarch64.so.1"
+    "libc.musl-aarch64.so.1",
   ];
   
   const newList: string[] = [];
   for (let i = 0; i < listOfFiles.length; ++i) {
     for (let j = 0; j < whitelist.length; ++j) {
-      if (!new RegExp(`/${whitelist[j]}`, "gi").test(listOfFiles[i])) {
-        newList.push(listOfFiles[i]);
-      }
+      if (new RegExp(`/${whitelist[j]}`, "gi").test(listOfFiles[i])) {
+        break;
+      } 
+      newList.push(listOfFiles[i]);
     }
   }
   return newList;
