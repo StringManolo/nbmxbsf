@@ -12,31 +12,36 @@ const removeElementsInWhiteList = (listOfFiles) => {
         "ld-musl-aarch64.so.1",
         "libc.musl-aarch64.so.1",
     ];
-    const newList = [];
-    let addFile = true;
-    for (let i = 0; i < listOfFiles.length; ++i) {
+    /* This code takes to long
+     *
+     * const newList = [];
+    
+      let addFile = true;
+      for (let i = 0; i < listOfFiles.length; ++i) {
         addFile = true;
         for (let j = 0; j < whitelist.length; ++j) {
-            let filename = "";
-            if (/\//g.test(listOfFiles[i])) {
-                const aux = listOfFiles[i].split("/");
-                filename = aux[aux.length - 1];
-            }
-            else {
-                filename = listOfFiles[i];
-            }
-            if (filename === whitelist[j]) {
-                addFile = false;
-            }
+          let filename = "";
+          if (/\//g.test(listOfFiles[i])) {
+            const aux = listOfFiles[i].split("/");
+            filename = aux[aux.length-1];
+          } else {
+            filename = listOfFiles[i];
+          }
+    
+          if (filename === whitelist[j]) {
+            addFile = false;
+          }
+    
         }
         if (addFile) {
-            newList.push(listOfFiles[i]);
+          newList.push(listOfFiles[i]);
+        } else {
+          addFile = true;
         }
-        else {
-            addFile = true;
-        }
-    }
-    return newList;
+      }
+      return newList;
+      */
+    return listOfFiles;
 };
 const readdir = (directory) => {
     var _a;

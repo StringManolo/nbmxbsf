@@ -10,7 +10,9 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
     "libc.musl-aarch64.so.1",
   ];
 
-  const newList = [];
+/* This code takes to long 
+ *
+ * const newList = [];
 
   let addFile = true;
   for (let i = 0; i < listOfFiles.length; ++i) {
@@ -36,6 +38,8 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
     }
   }
   return newList;
+  */
+  return listOfFiles;
 }
 
 const readdir = (directory: string) => {
