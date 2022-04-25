@@ -8,7 +8,17 @@ const fs_1 = __importDefault(require("fs"));
 const crypto_1 = __importDefault(require("crypto"));
 // Get list of files inside a folder
 const readdir = (path) => {
-    return fs_1.default.readdirSync(path);
+    const files = [];
+    fs_1.default.readdirSync(path).forEach(file => {
+        const absolute = path.join(path, file);
+        if (fs_1.default.statSync(absolute).isDirectory()) {
+            return readdir(absolute);
+        }
+        else {
+            return files.push(absolute);
+        }
+    });
+    return files;
 };
 // Load a file as utf-8 encoding
 const loadFile = (filename) => {

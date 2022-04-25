@@ -3,8 +3,17 @@ import fs from "fs";
 import crypto from "crypto";
 
 // Get list of files inside a folder
-const readdir = (path: string) => {
-  return fs.readdirSync(path);
+const readdir = (path: any) => {
+  const files = [] as any;
+  fs.readdirSync(path).forEach(file => {
+    const absolute = path.join(path, file);
+    if (fs.statSync(absolute).isDirectory()) {
+      return readdir(absolute);
+    } else {
+      return files.push(absolute);
+    }
+  });
+  return files;
 }
 
 // Load a file as utf-8 encoding
