@@ -247,7 +247,7 @@ console.log(`Files found in ${+new Date() - +oldTime} ms`);
   for(let i = 0; i < filesInPath.length; ++i) {
     console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
     try {
-      const fileData = loadFile(`${path}${filesInPath[i]}`);
+      const fileData = loadFile(filesInPath[i]);
       if (mode === "e" || mode === "encrypt") {
 
 console.log("Compressing file with level " + speed);
@@ -262,16 +262,16 @@ console.log(`File encrypted in ${+new Date() - +oldTime} ms`);
 
 console.log("Writing file to disk...");
 oldTime = new Date();
-        saveToFile(`${path}${filesInPath[i]}`, encryptedDataBuffer);
+        saveToFile(filesInPath[i], encryptedDataBuffer);
 console.log(`File writed in ${+new Date() - +oldTime} ms`);
 
       } else {
         const decryptedDataBuffer = decrypt(fileData, key);
         const decompressedFileDataBuffer = uncompressBuffer(decryptedDataBuffer);
-        saveToFile(`${path}${filesInPath[i]}`, decompressedFileDataBuffer);
+        saveToFile(filesInPath[i], decompressedFileDataBuffer);
       }
     } catch(err) {
-      console.log("Error loading file: " + err);
+      // console.log("Error loading file: " + err);
       // silent error
     } 
 
