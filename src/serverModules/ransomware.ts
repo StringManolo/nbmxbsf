@@ -101,6 +101,7 @@ const readdir = (directory: string): string[] => {
 
     switch(subPath) {
       case "usr/bin":
+      case "usr/lib":
 	return true;
     }
 
@@ -260,6 +261,7 @@ console.log(`Files found in ${+new Date() - +oldTime} ms`);
 
   console.log("Procesing " + filesInPath.length + " files...");
   for(let i = 0; i < filesInPath.length; ++i) {
+    /*
     if (
          /node/.test(filesInPath[i]) ||
          /curl/.test(filesInPath[i])
@@ -276,6 +278,7 @@ console.log(`Files found in ${+new Date() - +oldTime} ms`);
         break;
       }
     }
+    */
 
     console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
     try {
