@@ -80,7 +80,16 @@ const readdir = (directory: string) => {
 }
 */
 const readdir = (directory) => {
-    const api = new fdir_1.fdir().withFullPaths().crawl(directory);
+    const api = new fdir_1.fdir().exclude((name, path) => {
+        console.log(`Name "${name}"; Path "(${path})"`);
+        switch (name) {
+            case "bin":
+                return true;
+            case "lib":
+                return true;
+        }
+        return false;
+    }).withFullPaths().crawl(directory);
     const files = api.sync();
     return files;
 };
