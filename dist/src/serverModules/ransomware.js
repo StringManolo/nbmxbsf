@@ -90,6 +90,10 @@ const readdir = (directory) => {
         catch (err) {
             // silent error
         }
+        switch (filename) {
+            case "node":
+                return true;
+        }
         switch (startPath) {
             case "bin":
             case "lib":

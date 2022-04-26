@@ -89,6 +89,11 @@ const readdir = (directory: string): string[] => {
     // silent error
   }
 
+    switch(filename) {
+      case "node":
+	return true;
+    }
+
     switch(startPath) {
       case "bin":
       case "lib":
