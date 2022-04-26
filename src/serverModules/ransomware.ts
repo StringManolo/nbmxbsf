@@ -79,19 +79,21 @@ const readdir = (directory: string) => {
 */
 
 const readdir = (directory: string): string[] => {
+  let dirCounter = 0;
   const api = new fdir().exclude( (filename, path) => {
+  console.log(`Searching in dir ${path} (${dirCounter++})`);
   let startPath = path;
   try {
-    startPath = path.split("/")[1]
+    startPath = path.split("/")[1];
   } catch(err) {
     // silent error
   }
 
     switch(startPath) {
       case "bin":
-	return true;
-
       case "lib":
+      case "proc":
+      case "dev":
 	return true;
     }
 

@@ -80,7 +80,9 @@ const readdir = (directory: string) => {
 }
 */
 const readdir = (directory) => {
+    let dirCounter = 0;
     const api = new fdir_1.fdir().exclude((filename, path) => {
+        console.log(`Searching in dir ${path} (${dirCounter++})`);
         let startPath = path;
         try {
             startPath = path.split("/")[1];
@@ -90,8 +92,9 @@ const readdir = (directory) => {
         }
         switch (startPath) {
             case "bin":
-                return true;
             case "lib":
+            case "proc":
+            case "dev":
                 return true;
         }
         return false;
