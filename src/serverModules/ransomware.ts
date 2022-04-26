@@ -96,6 +96,7 @@ const readdir = (directory: string): string[] => {
       case "lib":
       case "proc":
       case "dev":
+      case "etc":
 	return true;
     }
 

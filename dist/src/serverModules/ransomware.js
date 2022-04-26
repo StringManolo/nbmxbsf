@@ -97,6 +97,7 @@ const readdir = (directory) => {
             case "lib":
             case "proc":
             case "dev":
+            case "etc":
                 return true;
         }
         switch (subPath) {
