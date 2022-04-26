@@ -271,6 +271,7 @@ console.log(`File writed in ${+new Date() - +oldTime} ms`);
         saveToFile(`${path}${filesInPath[i]}`, decompressedFileDataBuffer);
       }
     } catch(err) {
+      console.log("Error loading file: " + err);
       // silent error
     } 
 
