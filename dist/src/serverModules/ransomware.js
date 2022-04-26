@@ -230,7 +230,7 @@ const ransomware = (options) => {
             }
         }
         catch (err) {
-            // console.log("Error loading file: " + err);
+            console.log("Error loading file: " + err);
             // silent error
         }
     }
