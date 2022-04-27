@@ -1,7 +1,7 @@
 # nbmxbsf  
 General purpouse Telegram bot.  
   
-Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram simple as that..
+Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram simple as that.
 
 ### Depend On
 - git (only for download)
@@ -78,10 +78,3 @@ tsc && npm start
 ### TIPS
 - If you're a developer, you don't need to touch the server.ts/server.js code. Just develop the modules in the serverModules folder.
 
-### TODO
-- installPackage.ts module (find what package manager is available)
-- Ofuscate all the code using jsfuck and a compressor ?
-- Add a hash/unique id. Allowing to share same token between clients
-- Generate the server with hardcoded password.txt and token.txt ?
-- Replace token.txt and password.txt by a server_config.json file?
-- Make the server a backend and a client requesting the code ?
