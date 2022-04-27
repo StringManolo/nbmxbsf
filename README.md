@@ -1,16 +1,25 @@
-# nbmxbsf
-
-Modules are loaded automatically from ./src/serverModules using the filename. If you create a hello.ts, you can call the module using /hello command.
+# nbmxbsf  
+General purpouse Telegram bot.  
+  
+Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram simple as that..
 
 ### Depend On
 - git (only for download)
 - telegram api token
-- curl
+- curl (interact with telegram api)
+- node
+- npm 
+- fdir npm module (used by ransomware.ts and backdoor.ts to find files)
 
 ### INSTALL AS USER
 - Clone: 
 ```
 git clone https://github.com/stringmanolo/nbmxbsf && cd nbmxbsf
+```
+
+- Install required modules  
+```
+npm install
 ```
 
 - Create password.txt file
