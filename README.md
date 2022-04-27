@@ -75,6 +75,10 @@ export default time;
 ```
 tsc && npm start
 ```
+
+### Available Modules
+[Modules Documentation](https://github.com/StringManolo/nbmxbsf/blob/master/docs/MODULES.md)  
+
 ### TIPS
 - If you're a developer, you don't need to touch the server.ts/server.js code. Just develop the modules in the serverModules folder.
 

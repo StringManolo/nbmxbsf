@@ -1,6 +1,6 @@
 # Modules
 
-This is the documentation of the included by default modules you can rule your own.  
+This is the documentation of the included by default modules. You can rule your own if you know how to code in any of the supported languages. 
     
   
 ```bash
