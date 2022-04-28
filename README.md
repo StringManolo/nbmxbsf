@@ -1,7 +1,15 @@
 # nbmxbsf  
 General purpouse Telegram bot.  
   
-Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram simple as that.
+![Image of the Telegram Bot running on a Huawei Smartphone](https://github.com/StringManolo/nbmxbsf/blob/master/docs/botExample.jpg)  
+
+Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram simple as that.  
+  
+### Supported Platforms  
+- Linux
+- Termux
+  
+May work on other systems too with few changes. Not tested in Windows yet.  
 
 ### Depend On
 - git (only for download)
