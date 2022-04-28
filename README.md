@@ -1,7 +1,7 @@
 # nbmxbsf  
 General purpose Telegram bot.  
   
-![Image of the Telegram Bot running on a Huawei Smartphone](https://github.com/StringManolo/nbmxbsf/blob/master/docs/botExample.jpg)  
+<img alt="Image of the Telegram Bot running on a Huawei Smartphone" src="https://github.com/StringManolo/nbmxbsf/blob/master/docs/botExample.jpg" width="100">
 
 Modules are loaded automatically from ./src/serverModules using the filenames. If you create a hello.ts, you can call the module using /hello command from Telegram, simple as that. You can find modules documentation [here](https://github.com/StringManolo/nbmxbsf/blob/master/docs/MODULES.md)
   
