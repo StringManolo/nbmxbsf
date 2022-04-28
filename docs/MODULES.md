@@ -170,12 +170,13 @@ WORKING
 ### ransomware
 Encrypts all the files under indicated path, using a key derivation from your key and indicated compression strength. Some folders are ignored by default, so you don't break the system, the bot continues to work and the user can use the system to read the ransomware letter you send  
   
-Brotli compression is used to improve times, reduce size and increasse security  
-Known cryptography (aes 256 + camellia 256 + aes256, cbc with different IV) is used by default (OpenSSL implentations)  
-Know key derivations (base64, sha512) are used by default  
-Custom Xor encryption is added too (2 layers, using different key derivations) just as an extra. (I think i will help in case know vulnerabilities in OpenSSL arrives some day or to dificult a bit quantum computers job in cracking)  
-
-
+* Brotli compression is used to improve times, reduce size and increasse security  
+* Known cryptography (aes 256 + camellia 256 + aes256, cbc with different IV) is used by default (OpenSSL implentations)  
+* Know key derivations (base64, sha512) are used by default  
+* Custom Xor encryption is added too (2 layers, using different key derivations) just as an extra. (I think i will help in case know vulnerabilities in OpenSSL arrives some day or to dificult a bit quantum computers job in cracking)  
+  
+WORKING  
+  
 ```bash
 /ransomware e password /home 1
 ```
