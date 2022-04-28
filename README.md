@@ -21,53 +21,53 @@ May work on other systems too with few changes. Not tested in Windows yet.
 
 ### INSTALL AS USER
 - Clone: 
-```
+```bash
 git clone https://github.com/stringmanolo/nbmxbsf && cd nbmxbsf
 ```
 
 - Install required modules  
-```
+```bash
 npm install
 ```
 
 - Create password.txt file
-```
+```bash
 echo 'thisIsMyLoginPassword' > password.txt
 ```
 
 - Create token.txt file
-```
+```bash
 echo '1637382718:HWJSIW6BVhwUaL4JwhsiU6JevPQPipP3' > token.txt
 ```
 
 - Run the Bot
-```
+```bash
 npm start;
 ```
 
 - Login in telegram bot chat
-```
+```bash
 /login thisIsMyLoginPassword
 ```
 
 - Run available commands
-```
+```bash
 /help
 ```
 
 ### INSTALL AS DEVELOPER
 - Clone:
-```
+```bash
 git clone https://github.com/stringmanolo/nbmxbsf && cd nbmxbsf
 ```
 
 - Install required modules
-```
+```bash
 npm install
 ```
 
 - Make changes
-```
+```bash
 echo '// Example of easily creating a time command
 const time = (telegramText: string) => {
   return new Date();
@@ -80,7 +80,7 @@ export default time;
 - Create password.txt and token.txt files
 
 - Compile and run
-```
+```bash
 tsc && npm start
 ```
 
