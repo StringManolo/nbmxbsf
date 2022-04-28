@@ -1,5 +1,5 @@
 # nbmxbsf  
-General purpouse Telegram bot.  
+General purpose Telegram bot.  
   
 ![Image of the Telegram Bot running on a Huawei Smartphone](https://github.com/StringManolo/nbmxbsf/blob/master/docs/botExample.jpg)  
 
