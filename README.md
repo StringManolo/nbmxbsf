@@ -11,13 +11,13 @@ Modules are loaded automatically from ./src/serverModules using the filenames. I
   
 May work on other systems too with few changes. Not tested in Windows yet.  
 
-### Depend On
-- git (only for download)
-- telegram api token
-- curl (interact with telegram api)
-- node
-- npm 
-- fdir npm module (used by ransomware.ts and backdoor.ts to find files)
+### Depends On
+- [git](https://git-scm.com/download/linux) (only for download)
+- telegram's [bot api token](https://t.me/BotFather)
+- [curl](https://curl.se/download.html) (interact with telegram api)
+- [node](https://nodejs.org/en/download/)
+- [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [fdir](https://github.com/thecodrr/fdir#installation) npm module (used by [ransomware.ts](https://github.com/StringManolo/nbmxbsf/blob/master/src/serverModules/ransomware.ts#L5) and [backup.ts](https://github.com/StringManolo/nbmxbsf/blob/master/src/serverModules/backup.ts#L4) to find files)
 
 ### INSTALL AS USER
 - Clone: 
