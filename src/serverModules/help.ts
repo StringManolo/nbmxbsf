@@ -1,11 +1,20 @@
 const help = (text: string) => {
   console.log("help called");
-  const helpCommand = text.substring(5, text.length);
+  const helpCommand = text.substring(6, text.length);
   if (helpCommand) {
-    console.log("Returning help command");
+    switch(helpCommand) {
+      case "backup":
+        return `/command path
+path is the filesystem path you wabt to backup. Example:
+/backup /home`;
+      /* TODO: End all the help commands */
+        default:
+	  return `There is no help for ${helpCommand}.`;
+    }
+
+
     return "Help Recv (" + helpCommand + ")";
   } else {
-    console.log("Else called");
     return `
 - Not Implemented Commands:
 
